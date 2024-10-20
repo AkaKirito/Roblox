@@ -212,7 +212,7 @@ local function tpD()
 			-- teleport player to descendant
 			player.Character:PivotTo(descendant:GetPivot())
 
-			task.wait(0.3)			
+			task.wait(5)			
 		end
 	end
 end
