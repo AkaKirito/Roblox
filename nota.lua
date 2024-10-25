@@ -183,6 +183,9 @@ end
 
 local delayer = false
 local function tpD()
+	-- disabled for now
+	return
+	
 	if delayer then
 		delayer = false
 		return
