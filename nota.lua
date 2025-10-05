@@ -187,35 +187,6 @@ local function tpD()
 	return
 end
 
-local map = game.Workspace:FindFirstChild("Map", true)
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-
-delayer	= true
-
-while delayer do
-	for _, descendant in ipairs(map:GetDescendants()) do
-		if descendant.Name ~= "Crate" then
-			continue
-		end
-
-		if not delayer then
-			break
-		end
-
-		local prompt = descendant:FindFirstChildWhichIsA("ProximityPrompt")
-		if not prompt then
-			continue
-		end
-
-		-- teleport player to descendant
-		player.Character:PivotTo(descendant:GetPivot())
-
-		task.wait(5)			
-	end
-end
-
-
 local function MDA()
 	local map = game.Workspace:FindFirstChild("Map", true)
 	for _, descendant in pairs(map:GetDescendants()) do
