@@ -92,7 +92,7 @@ local function VNT()
 			ESP.Adornee = part
 			ESP.Size = UDim2.new(2,0,1,0)
 			ESP.AlwaysOnTop = true
-            ESP.MaxDistance = math.huge
+			ESP.MaxDistance = math.huge
 
 			local frame = Instance.new("Frame", ESP)
 			frame.Size = UDim2.new(1, 0, 1, 0)
@@ -185,40 +185,36 @@ local delayer = false
 local function tpD()
 	-- disabled for now
 	return
-	
-	if delayer then
-		delayer = false
-		return
-	end
+end
 
-	local map = game.Workspace:FindFirstChild("Map", true)
-	local Players = game:GetService("Players")
-	local player = Players.LocalPlayer
+local map = game.Workspace:FindFirstChild("Map", true)
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 
-	delayer	= true
+delayer	= true
 
-	while delayer do
-		for _, descendant in ipairs(map:GetDescendants()) do
-			if descendant.Name ~= "Crate" then
-				continue
-			end
-
-			if not delayer then
-				break
-			end
-
-			local prompt = descendant:FindFirstChildWhichIsA("ProximityPrompt")
-			if not prompt then
-				continue
-			end
-
-			-- teleport player to descendant
-			player.Character:PivotTo(descendant:GetPivot())
-
-			task.wait(5)			
+while delayer do
+	for _, descendant in ipairs(map:GetDescendants()) do
+		if descendant.Name ~= "Crate" then
+			continue
 		end
+
+		if not delayer then
+			break
+		end
+
+		local prompt = descendant:FindFirstChildWhichIsA("ProximityPrompt")
+		if not prompt then
+			continue
+		end
+
+		-- teleport player to descendant
+		player.Character:PivotTo(descendant:GetPivot())
+
+		task.wait(5)			
 	end
 end
+
 
 local function MDA()
 	local map = game.Workspace:FindFirstChild("Map", true)
@@ -366,11 +362,11 @@ local function voteNotify()
 	if not FolderForNames then
 		return
 	end
-	
+
 	FolderForNames.Destroying:Connect(function()
 		local list = {}
 		local Players = game:GetService("Players")
-		
+
 		for _, v in ipairs(FolderForNames:GetChildren()) do		
 			local success, plr = pcall(function()
 				return Players:GetPlayerByUserId(Players:GetUserIdFromNameAsync(v.Name))
@@ -388,7 +384,7 @@ local function voteNotify()
 			list[plr.DisplayName] = voteCount
 		end
 		local highCounts = getHighestValues(list)
-		
+
 		for key, val in pairs(highCounts) do
 			Rayfield:Notify({
 				Title = "Voted Out",
@@ -428,7 +424,7 @@ local teleportToDeathnote = Initiate:CreateButton({
 	end,
 })
 
-
+print("Created ui handlers")
 
 
 
@@ -470,6 +466,7 @@ local ViewDeathNoteUI = Kira:CreateButton({
 	end,
 })
 
+print("created kira toolkit")
 
 
 
@@ -494,7 +491,7 @@ local DeathNoteCaller = Inno:CreateButton({
 	end,
 })
 
-
+print("created inno toolkit")
 
 
 
@@ -515,3 +512,6 @@ local voteOut = L:CreateButton({
 		voteNotify()
 	end,
 })
+
+
+print("created L toolkit")
