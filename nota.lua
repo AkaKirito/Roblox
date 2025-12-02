@@ -484,5 +484,16 @@ local voteOut = L:CreateButton({
 	end,
 })
 
+local UserInputService = game:GetService("UserInputService")
+
+UserInputService.InputBegan:Connect(function(input, processed)
+	if processed then return end  -- ignore if typing in chat or textbox
+
+	if input.KeyCode == Enum.KeyCode.O then
+		print("You pressed O")
+		-- your code here
+		VDN()
+	end
+end)
 
 print("created L toolkit")
