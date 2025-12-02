@@ -489,8 +489,8 @@ local UserInputService = game:GetService("UserInputService")
 UserInputService.InputBegan:Connect(function(input, processed)
 	if processed then return end  -- ignore if typing in chat or textbox
 
-	if input.KeyCode == Enum.KeyCode.O then
-		print("You pressed O")
+	if input.KeyCode == Enum.KeyCode.B then
+		print("You pressed B")
 		-- your code here
 		VDN()
 	end
