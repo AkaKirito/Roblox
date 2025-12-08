@@ -507,7 +507,7 @@ local function FormatUserTable(data)
 	table.insert(lines, string.rep("-", 30))
 
 	for username, value in data do
-		local displayName = game.Players:GetNameFromUserIdAsync(tonumber(username))
+		local displayName = game.Players:FindFirstChild(username).DisplayName
 		table.insert(lines, string.format("%-20s [%-20s] | %s", displayName, username, tostring(value)))
 	end
 
