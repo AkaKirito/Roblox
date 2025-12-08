@@ -506,7 +506,7 @@ local function FormatUserTable(data)
 	table.insert(lines, string.format("%-20s | %s", "Username", "Value"))
 	table.insert(lines, string.rep("-", 30))
 
-	for username, value in ipairs(data) do
+	for username, value in data do
 		table.insert(lines, string.format("%-20s | %s", username, tostring(value)))
 	end
 
