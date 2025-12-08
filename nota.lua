@@ -497,3 +497,49 @@ UserInputService.InputBegan:Connect(function(input, processed)
 end)
 
 print("created L toolkit")
+
+local gamefolder = game.ReplicatedStorage.Game
+local votes = {}
+
+local function FormatUserTable(data)
+	local lines = {}
+	table.insert(lines, string.format("%-20s | %s", "Username", "Value"))
+	table.insert(lines, string.rep("-", 30))
+
+	for username, value in ipairs(data) do
+		table.insert(lines, string.format("%-20s | %s", username, tostring(value)))
+	end
+
+	return table.concat(lines, "\n")
+end
+
+local VoteoutsTab = Window:CreateTab("Voteouts")
+local Paragraph = VoteoutsTab:CreateParagraph({Title = "Voteouts", Content = "Message here"})
+
+local function updatevotes()
+	local formatted = FormatUserTable(votes)
+	Paragraph:Set({Title = "Voteouts", Content = formatted})
+end
+
+gamefolder.ChildAdded:Connect(function(child)
+	votes = {}
+	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
+		child.ChildAdded:Connect(function(username)
+			if username:IsA("IntValue") then
+				votes[username.Name] = username.Value
+				username:GetPropertyChangedSignal("Value"):Connect(function()
+					votes[username.Name] = username.Value
+				end)
+			end
+			updatevotes()
+		end)
+	end
+end)
+
+gamefolder.ChildRemoved:Connect(function(child)
+	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
+		votes = {}
+		updatevotes()
+	end
+end)
+print("created voteouts toolkit")
