@@ -501,13 +501,22 @@ print("created L toolkit")
 local gamefolder = game.ReplicatedStorage.Game
 local votes = {}
 
+local function getDisplayNameFromUserName(userName: string)
+	-- loop thru players
+	for _, player in ipairs(game.Players:GetPlayers()) do
+		if player.Name == userName then
+			return player.DisplayName
+		end
+	end
+end
+
 local function FormatUserTable(data)
 	local lines = {}
 	table.insert(lines, string.format("%-20s | %s", "Username", "Value"))
 	table.insert(lines, string.rep("-", 30))
 
 	for username, value in data do
-		local displayName = game.Players:GetPlayerByUserId(game.Players:GetUserIdFromNameAsync(username.Name))
+		local displayName = getDisplayNameFromUserName(username)
 		table.insert(lines, string.format("%-20s [%-20s] | %s", displayName, username, tostring(value)))
 	end
 
