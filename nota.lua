@@ -507,8 +507,6 @@ local function FormatUserTable(data)
 	table.insert(lines, string.rep("-", 30))
 
 	for username, value in ipairs(data) do
-		print(username)
-		print(value)
 		table.insert(lines, string.format("%-20s | %s", username, tostring(value)))
 	end
 
@@ -527,6 +525,7 @@ gamefolder.ChildAdded:Connect(function(child)
 	votes = {}
 	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
 		child.ChildAdded:Connect(function(username)
+			print("user added")
 			if username:IsA("IntValue") then
 				votes[username.Name] = username.Value
 				username:GetPropertyChangedSignal("Value"):Connect(function()
