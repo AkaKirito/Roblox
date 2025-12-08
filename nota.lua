@@ -517,8 +517,14 @@ local function FormatUserTable(data)
 
 	for username, value in data do
 		username = tostring(username)
+		print(username)
 		local displayName = getDisplayNameFromUserName(username)
-		table.insert(lines, string.format("%s [%s] | %s", displayName, username, tostring(value)))
+		if displayName then
+			table.insert(lines, string.format("%s [%s] | %s", displayName, username, tostring(value)))
+		else
+			print("Display name not found")
+		end
+		
 	end
 
 	return table.concat(lines, "\n")
