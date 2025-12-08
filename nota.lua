@@ -522,7 +522,7 @@ local function FormatUserTable(data)
 		if displayName then
 			table.insert(lines, string.format("%s [%s] | %s", displayName, username, tostring(value)))
 		else
-			print("Display name not found")
+			table.insert(lines, string.format("%s | %s", username, tostring(value)))
 		end
 		
 	end
