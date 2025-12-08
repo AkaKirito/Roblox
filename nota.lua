@@ -531,9 +531,10 @@ gamefolder.ChildAdded:Connect(function(child)
 				votes[username.Name] = username.Value
 				username:GetPropertyChangedSignal("Value"):Connect(function()
 					votes[username.Name] = username.Value
+					updatevotes()
 				end)
+				updatevotes()
 			end
-			updatevotes()
 		end
 		child.ChildAdded:Connect(function(username)
 			print("user added")
@@ -541,9 +542,10 @@ gamefolder.ChildAdded:Connect(function(child)
 				votes[username.Name] = username.Value
 				username:GetPropertyChangedSignal("Value"):Connect(function()
 					votes[username.Name] = username.Value
+					updatevotes()
 				end)
+				updatevotes()
 			end
-			updatevotes()
 		end)
 	end
 end)
