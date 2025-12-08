@@ -524,6 +524,17 @@ end
 gamefolder.ChildAdded:Connect(function(child)
 	votes = {}
 	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
+		for _, v in pairs(child:GetChildren()) do
+			local username = v
+			print("user added")
+			if username:IsA("IntValue") then
+				votes[username.Name] = username.Value
+				username:GetPropertyChangedSignal("Value"):Connect(function()
+					votes[username.Name] = username.Value
+				end)
+			end
+			updatevotes()
+		end
 		child.ChildAdded:Connect(function(username)
 			print("user added")
 			if username:IsA("IntValue") then
