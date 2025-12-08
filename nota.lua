@@ -512,12 +512,13 @@ end
 
 local function FormatUserTable(data)
 	local lines = {}
-	table.insert(lines, string.format("%-20s | %s", "Username", "Value"))
+	table.insert(lines, string.format("%s | %s | %s", "Name", "Username", "Value"))
 	table.insert(lines, string.rep("-", 30))
 
 	for username, value in data do
+		username = tostring(username)
 		local displayName = getDisplayNameFromUserName(username)
-		table.insert(lines, string.format("%-20s [%-20s] | %s", displayName, username, tostring(value)))
+		table.insert(lines, string.format("%s [%s] | %s", displayName, username, tostring(value)))
 	end
 
 	return table.concat(lines, "\n")
