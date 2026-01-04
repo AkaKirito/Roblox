@@ -445,8 +445,12 @@ end)
 gamefolder.GamePhase.Changed:Connect(function()
 	print(gamefolder.GamePhase.Value)
 	if gamefolder.GamePhase.Value == "IdScatter" then
-		VNT()
-		PB()
+		task.delay(3, function()
+			VNT()
+			PB()
+		end)
+		
+		
 	end
 end)
 
