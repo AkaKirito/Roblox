@@ -443,6 +443,7 @@ gamefolder.ChildAdded:Connect(function(child)
 end)
 
 gamefolder.GamePhase.Changed:Connect(function()
+	print(gamefolder.GamePhase.Value)
 	if gamefolder.GamePhase.Value == "IdScatter" then
 		VNT()
 		PB()
