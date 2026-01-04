@@ -1,4 +1,5 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local gamefolder = game.ReplicatedStorage.Game
 
 local Window = Rayfield:CreateWindow({
 	Name = "Death Note :)",
@@ -33,28 +34,6 @@ local function VNT()
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
 	local character = player.Character
-
-	local function playerCloseToPart(part: Part, size: number)
-		-- returns a table of players close to the part by size radius
-		local closePlayers = {}
-		for _, otherPlayer in ipairs(Players:GetPlayers()) do
-			local otherCharacter = otherPlayer.Character
-			if not otherCharacter then continue end
-			local otherRoot = otherCharacter:FindFirstChild("HumanoidRootPart")
-			if not otherRoot then continue end
-			local distance = (otherRoot.Position - part.Position).Magnitude
-			if distance <= size then
-				table.insert(closePlayers, otherPlayer)
-			end
-		end
-		return closePlayers
-	end
-
-	local function printTablePlayerNames(list, victimName)
-		for _, p in ipairs(list) do
-			warn(p.DisplayName .. " was close to picked up ID of: " .. victimName)
-		end
-	end
 
 	local function EspId()
 		for _, v in ipairs(place:GetDescendants()) do
@@ -106,23 +85,7 @@ local function VNT()
 			if assignedName == player.Name or assignedName == player.DisplayName then
 				textLabel.BackgroundColor3 = Color3.new(1, 0, 0)
 			end
-
-			prompt.Triggered:Connect(function(plyr: Player)
-				Rayfield:Notify({
-					Title = "Death Note User",
-					Content = assignedName .. " ID has been taken!",
-					Duration = 120,
-					Image = 4483362458,
-					Actions = { -- Notification Buttons
-						Ignore = {
-							Name = "I understand!",
-							Callback = function()
-								printTablePlayerNames(playerCloseToPart(part, 5), assignedName)
-							end
-						},
-					},
-				})
-			end)
+			
 
 			v:GetPropertyChangedSignal("Enabled"):Connect(function(...: any) 
 				if not v.Enabled then
@@ -243,6 +206,8 @@ local function isIn(instance: Instance, item)
 	return false
 end
 
+local roles = {}
+
 local function LG()
 	local rs = game.ReplicatedStorage
 	local temp = rs:FindFirstChild("Game")
@@ -256,6 +221,8 @@ local function LG()
 	end
 
 	local Players = game.Players
+	
+	local temp = {}
 
 	for _, v in ipairs(Players:GetPlayers()) do
 		local name = v.Name
@@ -280,22 +247,11 @@ local function LG()
 		if included then
 			continue
 		end
-
-		Rayfield:Notify({
-			Title = "They are it",
-			Content = v.DisplayName .. " <".. v.Name .. "> is one of them",
-			Duration = 20,
-			Image = 4483362458,
-			Actions = { -- Notification Buttons
-				Ignore = {
-					Name = "I understand!",
-					Callback = function()
-						print("The user tapped Okay!")
-					end
-				},
-			},
-		})
+		
+		table.insert(temp, v)
 	end
+	local roleName = gamefolder.GamePhase and gamefolder.GamePhase.Value or "Unknown"
+	roles[roleName] = temp
 end
 
 local function max(a)
@@ -322,102 +278,8 @@ local function getHighestValues(list: {})
 end
 
 
-local function voteNotify()
-	local rs = game.ReplicatedStorage
-	local temp = rs:FindFirstChild("Game")
-	if not temp then
-		return
-	end
-
-	local FolderForNames = temp:FindFirstChild("VoteoutFolder")
-	if not FolderForNames then
-		return
-	end
-
-	FolderForNames.Destroying:Connect(function()
-		local list = {}
-		local Players = game:GetService("Players")
-
-		for _, v in ipairs(FolderForNames:GetChildren()) do		
-			local success, plr = pcall(function()
-				return Players:GetPlayerByUserId(Players:GetUserIdFromNameAsync(v.Name))
-			end)
-
-			if not success then
-				continue
-			end
-
-			if not v:IsA("IntValue") then
-				continue
-			end
-
-			local voteCount = v.Value
-			list[plr.DisplayName] = voteCount
-		end
-		local highCounts = getHighestValues(list)
-
-		for key, val in pairs(highCounts) do
-			Rayfield:Notify({
-				Title = "Voted Out",
-				Content = key .. " has been voted out with " .. val .. " votes",
-				Duration = 20,
-				Image = 4483362458,
-				Actions = { -- Notification Buttons
-					Ignore = {
-						Name = "I understand!",
-						Callback = function()
-							print("The user tapped Okay!")
-						end
-					},
-				},
-			})
-		end
-	end)
-end
-
-
--- User Interface Handler
-local Initiate = Window:CreateTab("Initiate Game", 4483362458) -- Title, Image
-
-Initiate:CreateSection("Disable Proximity Prompts")
-local ProxButton = Initiate:CreateButton({
-	Name = "Disable",
-	Callback = function()
-		PB()
-	end,
-})
-
-Initiate:CreateSection("Teleport to Deathnote Crates")
-local teleportToDeathnote = Initiate:CreateButton({
-	Name = "Teleport",
-	Callback = function()
-		tpD()
-	end,
-})
-
-print("Created ui handlers")
-
-
-
 -- Kira tool set
 local Kira = Window:CreateTab("Kira Game", 4483362458) -- Title, Image
-
-Kira:CreateSection("View Nametags")
--- Innocent, kira VNT
-local NametagButton = Kira:CreateButton({
-	Name = "View",
-	Callback = function()
-		VNT()
-	end
-})
-
-Kira:CreateSection("Disable Proximity Prompts")
-local ProxButton = Kira:CreateButton({
-	Name = "Disable",
-	Callback = function()
-		PB()
-	end,
-})
 
 Kira:CreateSection("Max Distance Activation")
 local ExpButton = Kira:CreateButton({
@@ -444,15 +306,6 @@ print("created kira toolkit")
 -- Innocents
 local Inno = Window:CreateTab("Innocent Game", 4483362458) -- Title, Image
 
-Inno:CreateSection("View Nametags")
--- Innocent, kira VNT
-local NametagButton = Inno:CreateButton({
-	Name = "View",
-	Callback = function()
-		VNT()
-	end
-})
-
 -- innocent DNC
 Inno:CreateSection("Deathnote User Notifier")
 local DeathNoteCaller = Inno:CreateButton({
@@ -475,14 +328,37 @@ local LGame = L:CreateButton({
 		LG()
 	end,
 })
+local Kira = L:CreateParagraph({Title = "Kiras", Content = "Message Here"})
+local Mello = L:CreateParagraph({Title = "Mello", Content = "Message Here"})
+local Ryuzaki = L:CreateParagraph({Title = "L", Content = "Message Here"})
+local Gelus = L:CreateParagraph({Title = "Gelus", Content = "Message Here"})
 
-L:CreateSection("Notify who is getting voted")
-local voteOut = L:CreateButton({
-	Name = "Notify",
-	Callback = function() 
-		voteNotify()
-	end,
-})
+local function printablePlayerDisplayNames(playerList: {Player})
+	local names = {}
+	for _, player in ipairs(playerList) do
+		table.insert(names, player.DisplayName)
+	end
+	return table.concat(names, ", ")
+end
+
+gamefolder.GamePhase.Changed:Connect(function()
+	local roleName = gamefolder.GamePhase and gamefolder.GamePhase.Value or "Unknown"
+	local players = roles[roleName]
+	
+	if roleName == "KiraTurn" then
+		Kira.Content = "Kira: " .. printablePlayerDisplayNames(players)
+	end
+	if roleName == "MelloTurn" then
+		Mello.Content = "Mello: " .. printablePlayerDisplayNames(players)
+	end
+	if roleName == "LTurn" then
+		Ryuzaki.Content = "L: " .. printablePlayerDisplayNames(players)
+	end
+	if roleName == "GelusTurn" then
+		Gelus.Content = "Gelus: " .. printablePlayerDisplayNames(players)
+	end
+end)
+
 
 local UserInputService = game:GetService("UserInputService")
 
@@ -524,7 +400,6 @@ local function FormatUserTable(data)
 		else
 			table.insert(lines, string.format("%s | %s", username, tostring(value)))
 		end
-		
 	end
 
 	return table.concat(lines, "\n")
@@ -567,10 +442,19 @@ gamefolder.ChildAdded:Connect(function(child)
 	end
 end)
 
+gamefolder.GamePhase.Changed:Connect(function()
+	if gamefolder.GamePhase.Value == "IdScatter" then
+		VNT()
+		PB()
+	end
+end)
+
 gamefolder.ChildRemoved:Connect(function(child)
 	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
 		votes = {}
 		updatevotes()
 	end
 end)
+
 print("created voteouts toolkit")
+
