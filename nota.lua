@@ -208,7 +208,9 @@ end
 
 local roles = {}
 
+
 local function LG()
+
 	local rs = game.ReplicatedStorage
 	local temp = rs:FindFirstChild("Game")
 	if not temp then
@@ -315,6 +317,9 @@ local DeathNoteCaller = Inno:CreateButton({
 	end,
 })
 
+local inno_kiraParagraph = Inno:CreateParagraph({Title = "Kiras found", Content = "Message Here"})
+
+
 print("created inno toolkit")
 
 
@@ -322,12 +327,7 @@ print("created inno toolkit")
 -- L LG
 local L = Window:CreateTab("L <Ryuzaki> Game", 4483362458) -- Title, Image
 L:CreateSection("Role Notifier")
-local LGame = L:CreateButton({
-	Name = "View",
-	Callback = function()
-		LG()
-	end,
-})
+
 local Kira = L:CreateParagraph({Title = "Kiras", Content = "Message Here"})
 local Mello = L:CreateParagraph({Title = "Mello", Content = "Message Here"})
 local Ryuzaki = L:CreateParagraph({Title = "L", Content = "Message Here"})
@@ -358,6 +358,13 @@ gamefolder.GamePhase.Changed:Connect(function()
 		Gelus.Content = "Gelus: " .. printablePlayerDisplayNames(players)
 	end
 end)
+
+local function clearContents()
+	Kira.Content = "Kira: "
+	Mello.Content = "Mello: "
+	Ryuzaki.Content = "L: "
+	Gelus.Content = "Gelus: "
+end
 
 
 local UserInputService = game:GetService("UserInputService")
@@ -448,9 +455,12 @@ gamefolder.GamePhase.Changed:Connect(function()
 		task.delay(8, function()
 			VNT()
 			PB()
+			MDA()
 		end)
-		
-		
+	elseif gamefolder.GamePhase.Value == "Intermission" then
+		-- reset all datas
+		roles = {}
+		clearContents()
 	end
 end)
 
