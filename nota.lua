@@ -85,7 +85,7 @@ local function VNT()
 			if assignedName == player.Name or assignedName == player.DisplayName then
 				textLabel.BackgroundColor3 = Color3.new(1, 0, 0)
 			end
-			
+
 
 			v:GetPropertyChangedSignal("Enabled"):Connect(function(...: any) 
 				if not v.Enabled then
@@ -223,7 +223,7 @@ local function LG()
 	end
 
 	local Players = game.Players
-	
+
 	local temp = {}
 
 	for _, v in ipairs(Players:GetPlayers()) do
@@ -249,7 +249,7 @@ local function LG()
 		if included then
 			continue
 		end
-		
+
 		table.insert(temp, v)
 	end
 	local roleName = gamefolder.GamePhase and gamefolder.GamePhase.Value or "Unknown"
@@ -344,7 +344,7 @@ end
 gamefolder.GamePhase.Changed:Connect(function()
 	local roleName = gamefolder.GamePhase and gamefolder.GamePhase.Value or "Unknown"
 	local players = roles[roleName]
-	
+
 	if roleName == "KiraTurn" then
 		Kira.Content = "Kira: " .. printablePlayerDisplayNames(players)
 	end
@@ -395,12 +395,9 @@ end
 
 local function FormatUserTable(data)
 	local lines = {}
-	table.insert(lines, string.format("%s | %s | %s", "Name", "Username", "Value"))
-	table.insert(lines, string.rep("-", 30))
 
 	for username, value in data do
 		username = tostring(username)
-		print(username)
 		local displayName = getDisplayNameFromUserName(username)
 		if displayName then
 			table.insert(lines, string.format("%s [%s] | %s", displayName, username, tostring(value)))
@@ -425,7 +422,6 @@ gamefolder.ChildAdded:Connect(function(child)
 	if child.Name == "VoteoutFolder" and child:IsA("Folder") then
 		for _, v in pairs(child:GetChildren()) do
 			local username = v
-			print("user added")
 			if username:IsA("IntValue") then
 				votes[username.Name] = username.Value
 				username:GetPropertyChangedSignal("Value"):Connect(function()
@@ -436,7 +432,6 @@ gamefolder.ChildAdded:Connect(function(child)
 			end
 		end
 		child.ChildAdded:Connect(function(username)
-			print("user added")
 			if username:IsA("IntValue") then
 				votes[username.Name] = username.Value
 				username:GetPropertyChangedSignal("Value"):Connect(function()
