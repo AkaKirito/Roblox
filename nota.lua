@@ -109,12 +109,20 @@ local inno_kiraParagraph = Inno:CreateParagraph({Title = "Kiras found", Content 
 
 local foundKira = {}
 
+local function getPrintableFoundKira()
+	local result = {}
+	for player, _ in pairs(foundKira) do
+		table.insert(result, player.DisplayName)
+	end
+	return table.concat(result, ", ")
+end
+
 local function addKiraFound(player: Player)
 	if foundKira[player] then
 		return
 	end
 	foundKira[player] = true
-	inno_kiraParagraph:Set({Title = "Kiras found", Content = table.concat(foundKira, ", ")})	
+	inno_kiraParagraph:Set({Title = "Kiras found", Content = getPrintableFoundKira()})	
 end
 
 local function resetKiraFound()
