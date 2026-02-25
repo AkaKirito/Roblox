@@ -101,6 +101,27 @@ local function VNT()
 end
 
 
+-- Kira tool set
+local Kira = Window:CreateTab("Kira Game", 4483362458) -- Title, Image
+-- Innocents
+local Inno = Window:CreateTab("Innocent Game", 4483362458) -- Title, Image
+local inno_kiraParagraph = Inno:CreateParagraph({Title = "Kiras found", Content = "Message Here"})
+
+local foundKira = {}
+
+local function addKiraFound(player: Player)
+	if foundKira[player] then
+		return
+	end
+	foundKira[player] = true
+	inno_kiraParagraph:Set({Title = "Kiras found", Content = table.concat(foundKira, ", ")})	
+end
+
+local function resetKiraFound()
+	foundKira = {}
+	inno_kiraParagraph:Set({Title = "Kiras found", Content = "Message Here"})	
+end
+
 local function DNC()
 	-- The function that takes place when the button is pressed
 
@@ -113,7 +134,7 @@ local function DNC()
 				Rayfield:Notify({
 					Title = "Death Note User",
 					Content = v.DisplayName .. " revealed the death note book!",
-					Duration = 120,
+					Duration = 5,
 					Image = 4483362458,
 					Actions = { -- Notification Buttons
 						Ignore = {
@@ -124,6 +145,7 @@ local function DNC()
 						},
 					},
 				})
+				addKiraFound(v)
 				warn(v.DisplayName .. " revealed the death note book!")
 			end
 		end)
@@ -280,9 +302,6 @@ local function getHighestValues(list: {})
 end
 
 
--- Kira tool set
-local Kira = Window:CreateTab("Kira Game", 4483362458) -- Title, Image
-
 Kira:CreateSection("Max Distance Activation")
 local ExpButton = Kira:CreateButton({
 	Name = "Activate",
@@ -304,10 +323,6 @@ local ViewDeathNoteUI = Kira:CreateButton({
 print("created kira toolkit")
 
 
-
--- Innocents
-local Inno = Window:CreateTab("Innocent Game", 4483362458) -- Title, Image
-
 -- innocent DNC
 Inno:CreateSection("Deathnote User Notifier")
 local DeathNoteCaller = Inno:CreateButton({
@@ -316,9 +331,6 @@ local DeathNoteCaller = Inno:CreateButton({
 		DNC()
 	end,
 })
-
-local inno_kiraParagraph = Inno:CreateParagraph({Title = "Kiras found", Content = "Message Here"})
-
 
 print("created inno toolkit")
 
@@ -364,6 +376,7 @@ local function clearContents()
 	Mello.Content = "Mello: "
 	Ryuzaki.Content = "L: "
 	Gelus.Content = "Gelus: "
+	resetKiraFound()
 end
 
 
