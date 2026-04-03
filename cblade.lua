@@ -111,6 +111,7 @@ print("[exploit] Fetching inventory...")
 local inventory = InvokeServer("GetPlayerBaseData", "inv")
 
 local targetItem = nil
+print("Printing inventory")
 print(inventory)
 if inventory then
     -- Grab the first item we find
