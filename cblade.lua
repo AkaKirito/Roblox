@@ -113,6 +113,7 @@ local inventory = InvokeServer("GetPlayerBaseData", "inv")
 local targetItem = nil
 if inventory then
     -- Grab the first item we find
+    print(inventory)
     for _, item in pairs(inventory) do
         if item and item.id then
             targetItem = item
